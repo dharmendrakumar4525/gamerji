@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  table
+      thead
+        tr
+      tbody
+          each field in formData
+            tr
+              td= field.1
+              td= field.2
+              td= field.3
