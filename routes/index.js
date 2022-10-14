@@ -11,7 +11,7 @@ require('dotenv').config()
 /* GET home page. */
 router.get('/', (req, res, next) => {
   // downloadCsv(req,res);
-  res.render('index', { title: 'Welcome to Textract Uploader change it to: This tool is explicitly designed for Gamerji, to extract Leader Board tables from FreeFire Contest Result' })
+  res.render('index', { title: 'This tool is explicitly designed for Gamerji, to extract Leader Board tables from FreeFire Contest Result' })
 })
 
 router.get("/csv-download", (req, res, next) => {

@@ -1,8 +1,10 @@
 extends layout
 
 block content
-  h1= title  
-  p
+ div 
+  h1 Avidus Image to Table Extraction Tool
+  h1= title 
+  div
   form(action="fileupload", method="post", enctype="multipart/form-data") 
     input(type="file", name="filetoupload")
     input(type="submit", value="Upload File")
