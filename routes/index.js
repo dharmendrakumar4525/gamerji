@@ -5,6 +5,7 @@ const AWS = require('aws-sdk')
 const fs = require('fs')
 const textractHelper = require('aws-textract-helper')
 const { Parser } = require("json2csv");
+const { Console } = require('console')
 
 require('dotenv').config()
 
@@ -21,6 +22,7 @@ router.get("/csv-download", (req, res, next) => {
 router.post('/fileupload', (req, res, next) => {
   // Upload logic
   const form = new formidable.IncomingForm()
+  console.log(form,"Asdfasdfasdfasdf");
   form.parse(req, async (err, fields, files) => {
     if (err) {
       console.error(err)
@@ -36,6 +38,7 @@ router.post('/fileupload', (req, res, next) => {
     const s3Content = await s3Upload(s3Params)
     const textractData = await documentExtract(s3Content.Key);
     const formData = textractHelper.createTables(textractData);
+    console.log(formData);
     await downloadCsv(formData,res);
     res.render('fileupload', { title: 'Upload Results', formData })
   })
@@ -89,27 +92,42 @@ async function documentExtract (key) {
 
 async function dataModify(data) {
   let array =[];
+  let rank=0;
+  if(  Object.keys(data[0][1]).length==5){
    for (const property in data[0]) {
-     for (let i = 1; i <= 5; i++) {
-       if (i == 1) {
-         var object = {};
+        var object = {};
+         object.rank = rank++;
          object.usersname = data[0][property][1];
          object.eliminations = data[0][property][2];
+         object.rank1 = data[0][property][3];
+         object.usersname1 = data[0][property][4];
+         object.eliminations1 = data[0][property][5];
          array.push(object);
-       }
-       if (i == 4) {
-         var object = {};
-         object.usersname = data[0][property][4];
-         object.eliminations = data[0][property][5];
-         array.push(object);
-       }
-     }
    }
    return array;
-}
+  }
+  else{
+     for (const property in data[0]) {
+       var object = {};
+       object.rank = rank++;
+       object.usersname = data[0][property][2];
+       object.eliminations = data[0][property][3];
+       object.rank1 = data[0][property][4];
+       object.usersname1 = data[0][property][5];
+       object.eliminations1 = data[0][property][6];
+       array.push(object);
+     }
+     return array;
+  }
+
+  }
 
 async function downloadCsv(data,res) {
   const fields = [
+    {
+      label: "Rank",
+      value: "rank",
+    },
     {
       label: "User Name",
       value: "usersname",
@@ -117,6 +135,18 @@ async function downloadCsv(data,res) {
     {
       label: "Eliminations",
       value: "eliminations",
+    },
+    {
+      label: "Rank",
+      value: "rank1",
+    },
+    {
+      label: "User Name",
+      value: "usersname1",
+    },
+    {
+      label: "Eliminations",
+      value: "eliminations1",
     },
   ];
   data=await dataModify(data);

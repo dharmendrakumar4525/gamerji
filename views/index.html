@@ -1,0 +1,75 @@
+<!-- extends layout
+
+block content
+ div 
+  h1 Avidus Image to Table Extraction Tool
+  h1= title 
+  div
+  form(action="fileupload", method="post", enctype="multipart/form-data")  -->
+    <!-- input(type="file", name="filetoupload")
+    input(type="submit", value="Upload File") -->
+
+
+    <!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="w-full">
+        <div class="container mx-auto mb-10">
+            <div class="flex flex-col items-center space-y-3">
+                <div class="h-24 w-24 text-center">
+                    <img src="https://www.gamerji.com/img/logo.png" alt="" class="rounded-full">
+                </div>
+                <h2 class="text-2xl">
+                    Avidus Image to Table Extraction Tool
+                </h2>
+                <h3 class="text-xl">
+                    This tool is explicitly designed for Gamerji, to extract Leader Board tables from FreeFire Contest
+                    Result
+                </h3>
+            </div>
+        </div>
+        <form action="fileupload", method="post", enctype="multipart/form-data">
+        <div class="container mx-auto font-light flex items-center h-screen1">
+           
+            <div class="grid grid-col-1 gap-6 w-full">
+                <div class="shadow-md border p-6">
+                    <h3 class="text-2xl">Select your Image style</h3>
+                    <div class="flex my-6 space-x-10">
+                        <div class="flex space-x-2 items-center">
+                            <input type="radio" checked="checked">
+                            <label>Freefire</label>
+                        </div>
+                        <!-- <div class="flex space-x-2 items-center">
+                            <input type="radio">
+                            <label>Bitnami</label>
+                        </div>
+                        <div class="flex space-x-2 items-center">
+                            <input type="radio">
+                            <label>Abc</label>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="shadow-md border p-6">
+
+                    <div class="flex my-6 space-x-10">
+                        <input type="file"  name="filetoupload" class="border-2 p-1 rounded" >
+                    </div>
+                </div>
+                <div>
+                    <input type="submit", value="Continue" class="bg-cyan-400 shadow-md text-white px-12 py-3">
+                </div>
+            </div>
+        </div>
+          </form>
+    </div>
+</body>
+
+</html>
