@@ -22,7 +22,6 @@ router.get("/csv-download", (req, res, next) => {
 router.post('/fileupload', (req, res, next) => {
   // Upload logic
   const form = new formidable.IncomingForm()
-  console.log(form,"Asdfasdfasdfasdf");
   form.parse(req, async (err, fields, files) => {
     if (err) {
       console.error(err)
@@ -38,7 +37,7 @@ router.post('/fileupload', (req, res, next) => {
     const s3Content = await s3Upload(s3Params)
     const textractData = await documentExtract(s3Content.Key);
     const formData = textractHelper.createTables(textractData);
-    console.log(formData);
+    // console.log(formData,"sadfasdf");
     await downloadCsv(formData,res);
     res.render('fileupload', { title: 'Upload Results', formData })
   })
@@ -95,6 +94,7 @@ async function dataModify(data) {
   let rank=0;
   if(  Object.keys(data[0][1]).length==5){
    for (const property in data[0]) {
+    console.log(property,"Asdfasdf");
         var object = {};
          object.rank = rank++;
          object.usersname = data[0][property][1];
@@ -102,8 +102,10 @@ async function dataModify(data) {
          object.rank1 = data[0][property][3];
          object.usersname1 = data[0][property][4];
          object.eliminations1 = data[0][property][5];
+         console.log(object,"ASdfadsf");
          array.push(object);
    }
+   array.shift();
    return array;
   }
   else{
@@ -117,6 +119,7 @@ async function dataModify(data) {
        object.eliminations1 = data[0][property][6];
        array.push(object);
      }
+     array.shift();
      return array;
   }
 
