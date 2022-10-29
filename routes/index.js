@@ -6,6 +6,7 @@ const fs = require('fs')
 const textractHelper = require('aws-textract-helper')
 const { Parser } = require("json2csv");
 const { Console } = require('console')
+const path = require('path');
 
 require('dotenv').config()
 
@@ -38,7 +39,7 @@ router.post('/fileupload', (req, res, next) => {
     const textractData = await documentExtract(s3Content.Key);
     const formData = textractHelper.createTables(textractData);
     // console.log(formData,"sadfasdf");
-    await downloadCsv(formData,res);
+    await downloadCsv(formData,res,path.parse(files.filetoupload.name).name);
     res.render('fileupload', { title: 'Upload Results', formData })
   })
 })
@@ -97,12 +98,11 @@ async function dataModify(data) {
     console.log(property,"Asdfasdf");
         var object = {};
          object.rank = rank++;
-         object.usersname = data[0][property][1];
+         object.usersname = modifyString(data[0][property][1],object.rank);                 ;
          object.eliminations = data[0][property][2];
          object.rank1 = data[0][property][3];
          object.usersname1 = data[0][property][4];
          object.eliminations1 = data[0][property][5];
-         console.log(object,"ASdfadsf");
          array.push(object);
    }
    array.shift();
@@ -125,7 +125,7 @@ async function dataModify(data) {
 
   }
 
-async function downloadCsv(data,res) {
+async function downloadCsv(data,res,name) {
   const fields = [
     {
       label: "Rank",
@@ -153,7 +153,9 @@ async function downloadCsv(data,res) {
     },
   ];
   data=await dataModify(data);
-  return downloadResource(res, "users.csv", fields, data);
+
+ const fileName = name+'.csv';
+  return downloadResource(res, fileName, fields, data);
 
 }
 
@@ -165,5 +167,12 @@ async function downloadResource(res, fileName, fields, data) {
   res.attachment(fileName);
   return res.send(csv);
 }
+
+function modifyString(string , key){
+  if(string[0]==key) {
+   return string.substring(1);
+  }
+  return string;
+  }
 
 module.exports = router
